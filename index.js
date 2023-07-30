@@ -23,7 +23,8 @@ const server = app.listen(process.env.PORT, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+   // origin: "http://localhost:3000",
+    origin: "https://shiny-strudel-8e3e6e.netlify.app",
     credentials: true,
   },
 });
