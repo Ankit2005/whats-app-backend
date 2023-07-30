@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Step 
+// 1. npx prisma generate
+// 2. npx prisma db push
+// 3. npx prisma studio
+// scp -i /path/to/your/private-key.pem -r /path/to/your/nextjs/project ubuntu@your-ec2-instance-ip:/var/www/client
+
+// sudo scp -i "/Users/apple/Documents/My projects/whatsAppCloneAws.pem" -r "/Users/apple/Documents/My projects/nextjs-whatsapp-clone-master/client" ubuntu@ip-172-31-47-41:/var/www/client
+// sudo scp -i "/Users/apple/Documents/My projects/whatsAppCloneAws.pem" -r "/Users/apple/Documents/My projects/nextjs-whatsapp-clone-master/client/ecosystem.config.js" ubuntu@ec2-13-114-104-228.ap-northeast-1.compute.amazonaws.com:/var/www/client/
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// datasource db {
+//   provider = "postgresql"
+//   //provider = "mongodb"
+//   url      = env("DATABASE_URL")
+// }
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
+
+// model User {
+//   id               String    @id @default(cuid()) @map("_id")
+//   email            String    @unique
+//   name             String
+//   profilePicture   String    @default("")
+//   about            String    @default("")
+//   sentMessages     Message[] @relation("sentMessages")
+//   receivedMessages Message[] @relation("receivedMessages")
+// }
+
+// model Message {
+//   id            String   @id @default(cuid()) @map("_id")
+//   sender        User     @relation("sentMessages", fields: [senderId], references: [id])
+//   senderId      String
+//   receiver      User     @relation("receivedMessages", fields: [receiverId], references: [id])
+//   receiverId    String
+//   type          String   @default("text")
+//   message       String
+//   messageStatus String   @default("sent")
+//   createdAt     DateTime @default(now())
+// }
+
+//==================== postgresql ===========
+
+model User {
+  id               Int        @id @default(autoincrement())
+  email            String     @unique
+  name             String
+  profilePicture   String     @default("")
+  about            String     @default("")
+  sentMessages     Messages[] @relation("sentMessages")
+  recievedMessages Messages[] @relation("recievedMessages")
+}
+
+model Messages {
+  id            Int      @id @default(autoincrement())
+  sender        User     @relation("sentMessages", fields: [senderId], references: [id])
+  senderId      Int
+  reciever      User     @relation("recievedMessages", fields: [recieverId], references: [id])
+  recieverId    Int
+  type          String   @default("text")
+  message       String
+  messageStatus String   @default("sent")
+  createdAt     DateTime @default(now())
+}
+
+/// scp -i /path/to/my-key.pem -r ./build ec2-user@123.456.789.101:/home/ec2-user/client
