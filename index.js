@@ -24,7 +24,7 @@ const server = app.listen(process.env.PORT, () => {
 const io = new Server(server, {
   cors: {
    // origin: "http://localhost:3000",
-    origin: "https://whats-app-clone-omega-liart.vercel.app",
+    origin: "https://whats-app-clone-esram75pr-ankit2005.vercel.app",
     credentials: true,
   },
 });
